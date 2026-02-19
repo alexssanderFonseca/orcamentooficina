@@ -73,8 +73,11 @@ jobs:
         working-directory: ${{ inputs.k8s-overlay-path }}
 
       - name: Aplicar Kustomize e Injetar Segredos
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          RDS_URL: ${{ secrets.RDS_URL }}
         run: |
           kustomize build ${{ inputs.k8s-overlay-path }} | 
-          sed "s|DB_PASSWORD_PLACEHOLDER|$(echo -n "${{ secrets.DB_PASSWORD }}" | base64 -w 0)|g" | 
-          sed "s|RDS_URL_PLACEHOLDER|$(echo -n "${{ secrets.RDS_URL }}" | base64 -w 0)|g" | 
+          sed "s|DB_PASSWORD_PLACEHOLDER|$(echo -n "$DB_PASSWORD" | base64 -w 0)|g" | 
+          sed "s|RDS_URL_PLACEHOLDER|$(echo -n "$RDS_URL" | base64 -w 0)|g" | 
           kubectl apply -f -
