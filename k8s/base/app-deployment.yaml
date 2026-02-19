@@ -37,14 +37,13 @@ spec:
                   key: RDS_URL
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
-                secretKeyRef:
-                  name: orcamento-secret
+                configMapKeyRef:
+                  name: orcamento-app-config
                   key: RDS_USERNAME
             - name: SPRING_DATASOURCE_PASSWORD
-            
               valueFrom:
                 secretKeyRef:
-                  name: orcamento-postgres-secret
+                  name: orcamento--secret
                   key: SPRING_DATASOURCE_PASSWORD
             - name: SERVER_PORT
               value: "9091"
