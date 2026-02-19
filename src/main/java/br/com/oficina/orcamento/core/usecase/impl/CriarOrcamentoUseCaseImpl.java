@@ -7,6 +7,7 @@ import br.com.oficina.orcamento.core.usecase.input.CriarOrcamentoInput;
 import jakarta.inject.Named;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,13 +28,22 @@ public class CriarOrcamentoUseCaseImpl implements CriarOrcamentoUseCase {
                 input.getVeiculo().getModelo(),
                 input.getVeiculo().getPlaca());
 
+        var itens = montarItens(input);
+        
+        var valorTotal = input.getValorTotal();
+        if (valorTotal == null || valorTotal.compareTo(BigDecimal.ZERO) == 0) {
+            valorTotal = itens.stream()
+                    .map(item -> item.getPreco().multiply(BigDecimal.valueOf(item.getQuantidade())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+
         var orcamento = new Orcamento(
                 UUID.randomUUID(),
                 input.getOrdemServicoId(),
                 cliente,
                 veiculo,
-                montarItens(input),
-                input.getValorTotal()
+                itens,
+                valorTotal
         );
         return orcamentoRepository.salvar(orcamento).getId();
     }

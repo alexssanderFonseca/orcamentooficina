@@ -33,7 +33,7 @@ feign:
 
 otel:
   service:
-    name: oficina
+    name: ${OTEL_SERVICE_NAME:orcamento}
     resource:
       attributes:
         environment: ${OTEL_ENVIRONMENT}
