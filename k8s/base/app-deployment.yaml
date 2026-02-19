@@ -17,6 +17,9 @@ spec:
       labels:
         app: orcamento-app
         admission.datadoghq.com/enabled: "true"
+        tags.datadoghq.com/service: "orcamento"
+        tags.datadoghq.com/env: "local"
+        tags.datadoghq.com/version: "1.0.0"
     spec:
       containers:
         - name: orcamento-app
@@ -26,10 +29,23 @@ spec:
           args:
             - |
               export OTEL_EXPORTER_OTLP_ENDPOINT="http://${DD_AGENT_HOST}:4318"
+              export OTEL_SERVICE_NAME="orcamento"
               exec java -jar app.jar
           ports:
             - containerPort: 9091
           env:
+            - name: DD_SERVICE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/service']
+            - name: DD_ENV
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/env']
+            - name: DD_VERSION
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['tags.datadoghq.com/version']
             - name: SPRING_DATASOURCE_URL
               valueFrom:
                 secretKeyRef:
@@ -74,15 +90,15 @@ spec:
               path: /actuator/health
               port: 9091
             initialDelaySeconds: 300
-            periodSeconds: 10
+            periodSeconds: 20
             timeoutSeconds: 5
-            failureThreshold: 3
+            failureThreshold: 5
 
           readinessProbe:
             httpGet:
               path: /actuator/health
               port: 9091
-            initialDelaySeconds: 60
+            initialDelaySeconds: 120
             periodSeconds: 10
             timeoutSeconds: 10
             failureThreshold: 5

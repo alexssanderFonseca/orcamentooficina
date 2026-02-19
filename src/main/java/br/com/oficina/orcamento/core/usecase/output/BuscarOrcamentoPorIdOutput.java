@@ -37,11 +37,11 @@ public record BuscarOrcamentoPorIdOutput(
 
         // A entidade Cliente não possui mais dados do veículo
         var orcamentoVeiculoOutput = new OrcamentoVeiculoOutput(
-                null,
-                null,
-                null,
-                null,
-                null
+                orcamento.getVeiculo().getId() != null ? orcamento.getVeiculo().getId().toString() : null,
+                orcamento.getVeiculo().getPlaca(),
+                orcamento.getVeiculo().getMarca(),
+                null, // Ano não presente na entidade Veiculo
+                orcamento.getVeiculo().getModelo()
         );
 
         return new BuscarOrcamentoPorIdOutput(
