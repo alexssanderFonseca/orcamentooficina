@@ -43,7 +43,7 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: orcamento--secret
+                  name: orcamento-secret
                   key: SPRING_DATASOURCE_PASSWORD
             - name: SERVER_PORT
               value: "9091"
