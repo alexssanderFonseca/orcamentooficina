@@ -5,4 +5,4 @@ metadata:
 data:
   ENV_NAME: "local"
   RDS_USERNAME: userOrcamentoDb
-  ORDEM_SERVICO_WEBHOOK_URL: "http://ordem-servico-app-service"
+  ORDEM_SERVICO_WEBHOOK_URL: "http://ordem-servico-ordem-servico-app-service"

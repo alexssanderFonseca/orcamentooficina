@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: orcamento-app-service
+  name: orcamento-orcamento-app-service
   namespace: oficina-ns
   labels:
     app: orcamento-app
