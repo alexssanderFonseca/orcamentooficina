@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: app-config
+  name: orcamento-app-config
 data:
   ENV_NAME: "prod"
 
