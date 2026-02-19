@@ -1,0 +1,32 @@
+name: CI Pipeline - Orcamento
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+  build-and-test:
+    name: Build e Testes - Orcamento
+    uses: ./.github/workflows/reusable-build.yml
+    secrets: inherit
+
+  validate-docker:
+    name: Validação Docker - Orcamento
+    needs: build-and-test
+    uses: ./.github/workflows/reusable-docker.yml
+    secrets: inherit
+    with:
+      context: .
+      dockerfile: Dockerfile
+
+  create-pull-request:
+    name: Criar Pull Request - Orcamento
+    needs: [validate-docker]
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: ./.github/workflows/reusable-pr.yml
+    secrets: inherit
+    with:
+      branch-name: ${{ github.ref_name }}

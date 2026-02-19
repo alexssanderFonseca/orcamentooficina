@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orcamento-app-config
+data:
+  ENV_NAME: "local"
+  ORDEM_SERVICO_WEBHOOK_URL: "http://ordem-servico-app-service"
